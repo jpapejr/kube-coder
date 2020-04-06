@@ -3,7 +3,7 @@ FROM codercom/code-server
 LABEL maintainer "John Pape <jpapejr@icloud.com>"
 
 RUN sudo apt update \
- && sudo apt install -y python python3 nodejs golang wget snapd \
+ && sudo apt install -y python python3 nodejs golang wget \
  && curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly -y \ 
  && sudo rm -rf /var/lib/apt/lists/*
 
