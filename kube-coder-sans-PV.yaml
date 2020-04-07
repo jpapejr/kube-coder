@@ -1,0 +1,108 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kube-coder
+  labels:
+    deploy.razee.io/Reconcile: "true"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-coder
+  labels:
+    app: kube-coder
+    deploy.razee.io/Reconcile: "true"
+    razee/watch-resource: "detail"
+  namespace: kube-coder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-coder
+  template:
+    metadata:
+      labels:
+        app: kube-coder
+    spec:
+      initContainers:
+      - name: initcontainer # Or replace the name
+        image: alpine:latest
+        command: ["/bin/sh", "-c"]
+        args:
+        - chmod -R ugo+rwx /home/coder/.local
+        volumeMounts:
+        - name: data
+          mountPath: /home/coder/.local
+      containers:
+      - name: coder
+        image: jpapejr/kube-coder:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        securityContext:
+          allowPrivilegeEscalation: true
+        volumeMounts:
+        - mountPath: /home/coder/projects
+          name: data
+          subPath: projects
+        - mountPath: /home/coder/.local
+          name: data
+          subPath: coder-data
+        - mountPath: /home/coder/vsix
+          name: data
+          subPath: vsix
+      - name: skopeo
+        image: ananace/skopeo
+        imagePullPolicy: Always
+        command:
+        - tail
+        args:
+        - -f
+        - /dev/null
+        volumeMounts:
+        - mountPath: /home/coder/projects
+          name: data    
+          subPath: projects
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: projects-and-coder-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-coder
+  namespace: kube-coder
+  labels:
+    deploy.razee.io/Reconcile: "true"
+    razee/watch-resource: "detail"
+spec:
+  selector:
+    app: kube-coder
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: extensions/v1beta1  
+kind: Ingress  
+metadata:  
+  name: kube-coder
+  namespace: kube-coder
+  labels:
+    deploy.razee.io/Reconcile: "true"
+    razee/watch-resource: "detail"
+spec:  
+  tls:  
+  - hosts:  
+    - dev.kubedclouds.us
+    secretName: dev-kubedclouds-certs  
+  rules:        
+  - host: dev.kubedclouds.us
+    http:  
+      paths:  
+      - path: /
+        backend:  
+          serviceName: kube-coder
+          servicePort: 80
