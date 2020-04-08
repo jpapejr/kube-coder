@@ -70,8 +70,11 @@ spec:
           name: data
           subPath: coder-data
         - mountPath: /home/coder/vsix
-          name: data
-          subPath: vsix
+          name: toolburster
+          subPath: vsix-cache
+        - mountPath: /home/coder/bin
+          name: toolburster
+          subPath: /cloudshell-toolbox
       - name: skopeo
         image: ananace/skopeo
         imagePullPolicy: Always
@@ -84,10 +87,18 @@ spec:
         - mountPath: /home/coder/projects
           name: data    
           subPath: projects
+      - name: toolburster
+        image: jpapejr/toolburster
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /util
+          name: toolburster
       volumes:
       - name: data
         persistentVolumeClaim:
           claimName: projects-and-coder-data
+      - name: toolburster
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
