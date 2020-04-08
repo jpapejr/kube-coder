@@ -76,7 +76,7 @@ spec:
           name: toolburster
           subPath: cloudshell-toolbox
         - mountPath: /home/coder/.kube
-          name: k8s_config
+          name: k8s-config
       - name: skopeo
         image: ananace/skopeo
         imagePullPolicy: Always
@@ -100,14 +100,14 @@ spec:
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /root/.kube
-          name: k8s_config
+          name: k8s-config
       volumes:
       - name: data
         persistentVolumeClaim:
           claimName: projects-and-coder-data
       - name: toolburster
         emptyDir: {}
-      - name: k8s_config
+      - name: k8s-config
         emptyDir: {}
 ---
 apiVersion: v1
