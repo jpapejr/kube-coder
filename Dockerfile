@@ -7,7 +7,7 @@ RUN sudo apt update \
  && curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain nightly -y \ 
  && sudo rm -rf /var/lib/apt/lists/*
 
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/coder/.cargo/bin
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/coder/.cargo/bin:/home/coder/bin
 EXPOSE 8080
 USER coder
 WORKDIR /home/coder
