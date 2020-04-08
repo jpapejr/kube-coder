@@ -74,7 +74,7 @@ spec:
           subPath: vsix-cache
         - mountPath: /home/coder/bin
           name: toolburster
-          subPath: /cloudshell-toolbox
+          subPath: cloudshell-toolbox
       - name: skopeo
         image: ananace/skopeo
         imagePullPolicy: Always
