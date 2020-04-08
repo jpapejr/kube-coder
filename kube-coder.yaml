@@ -98,6 +98,11 @@ spec:
       - name: ibmcloud
         image: ibmcom/ibm-cloud-developer-tools-amd64
         imagePullPolicy: Always
+        command:
+        - tail
+        args:
+        - -f
+        - /dev/null
         volumeMounts:
         - mountPath: /root/.kube
           name: k8s-config
