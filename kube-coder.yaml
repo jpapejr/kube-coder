@@ -91,7 +91,7 @@ spec:
         image: jpapejr/toolburster
         imagePullPolicy: Always
         volumeMounts:
-        - mountPath: /util
+        - mountPath: /utils
           name: toolburster
       volumes:
       - name: data
