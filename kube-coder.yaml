@@ -24,7 +24,7 @@ metadata:
      requests:
        storage: 20Gi
        iops: "600"
-   storageClassName: ibmc-file-retain-custom
+   storageClassName: ibmc-file-custom
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -116,10 +116,10 @@ metadata:
 spec:  
   tls:  
   - hosts:  
-    - dev.kubedclouds.us
-    secretName: dev-kubedclouds-certs  
+    - coder.subdomainhere.com
+    secretName: cluster-secret-here  
   rules:        
-  - host: dev.kubedclouds.us
+  - host: coder.subdomainhere.com
     http:  
       paths:  
       - path: /
