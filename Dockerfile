@@ -1,5 +1,5 @@
 
-FROM codercom/code-server
+FROM codercom/code-server:3.1.0
 LABEL maintainer "John Pape <jpapejr@icloud.com>"
 
 RUN sudo apt update \
